@@ -4,6 +4,7 @@ body
   padding: 0;
   margin: 0;
   font-family: Arial, sans-serif;
+  height:100%;
 }
 
 /* hide horizontal scrollbars, since we use the vertical ones to scroll to the right */
@@ -46,6 +47,7 @@ h1
 {
   z-index: 500;
   width: 8100px;
+  height:100%;
 }
 
 .front
