@@ -25,6 +25,7 @@
 *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 *   THE SOFTWARE.
 **/
+var prevScroll = 0;
 (function($) {
     $.jInvertScroll = function(sel, options) {
         var defaults = {
@@ -77,6 +78,9 @@
         $(window).on('scroll resize', function(e) {
             var currY = $(this).scrollTop();
             var totalHeight = $(document).height();
+            if(prevScroll+currY<totalHeight){
+                prevScroll = currY;
+            }
             var winHeight = $(this).height();
             var winWidth = $(this).width();
             
@@ -88,6 +92,29 @@
                 config.onScroll.call(this, scrollPercent);
             }
             
+            // do the position calculation for each element
+            $.each(elements, function(i, el) {
+                var pos = Math.floor((el.width - winWidth) * scrollPercent) * -1;
+                el.el.css('left', pos);
+            });
+        });
+        $('#next').on('click', function(e) {
+            var currY = 400+prevScroll;
+            var totalHeight = $(document).height();
+            if(prevScroll+currY<totalHeight){
+                prevScroll = currY;
+            }
+            var winHeight = $(this).height();
+            var winWidth = $(this).width();
+
+            // Current percentual position
+            var scrollPercent = (currY / (totalHeight - winHeight)).toFixed(4);
+
+            // Call the onScroll callback
+            if(typeof config.onScroll === 'function') {
+                config.onScroll.call(this, scrollPercent);
+            }
+
             // do the position calculation for each element
             $.each(elements, function(i, el) {
                 var pos = Math.floor((el.width - winWidth) * scrollPercent) * -1;
